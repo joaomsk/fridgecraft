@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import fridgecraft.Item
+import fridgecraft.SmartFridge
 import java.time.LocalDateTime
 
 class SmartFridgeTest {

@@ -1,3 +1,5 @@
+package fridgecraft
+
 import java.time.LocalDateTime
 
 data class SmartFridge(
@@ -7,7 +9,11 @@ data class SmartFridge(
     fun open() {
         println("Opening fridge... ${LocalDateTime.now()}")
         this.isOpen = true
-        repeat(items.size) { this.degradeItemsWhenFridgeIsOpen() }
+        items.forEach { it.degrade() }
+    }
+
+    private fun degradeItemsWhenFridgeIsOpen() {
+        items.forEach { it.degrade() }
     }
 
     fun close() {
@@ -34,12 +40,18 @@ data class SmartFridge(
         println("Removed item: $itemName")
     }
 
-    fun getItem(itemName: String): Item? {
-        println("Getting item: $itemName")
-        return items.find { it.name == itemName }
+    fun listItems() {
+        showExpiredItems()
+        showNotExpiredItems()
     }
 
-    private fun degradeItemsWhenFridgeIsOpen() {
-        items.forEach { it.degrade() }
+    private fun showExpiredItems() {
+        val expiredItems = items.filter { it.isExpired() }
+        expiredItems.forEach { println("EXPIRED: ${it.name}") }
+    }
+
+    private fun showNotExpiredItems() {
+        val remainingItems = items.filter { !it.isExpired() }
+        remainingItems.forEach { println("${it.name}: ${it.checkDaysRemainingForExpire()} days remaining until expire") }
     }
 }
